@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Меню заказа</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #181828; color: #fff; }
+    .item { display: flex; align-items: center; margin: 10px 0; }
+    .item img { width: 48px; margin-right: 10px; }
+    .item button { margin-left: auto; }
+    #cart { margin-top: 20px; background: #222; padding: 10px; border-radius: 8px; }
+    .btn { background: #2d7cff; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h2>Меню</h2>
+  <div id="menu"></div>
+  <div id="cart"></div>
+  <script>
+    const items = [
+      { name: 'Бургер', price: 700, img: '🍔' },
+      { name: 'Картошка', price: 70, img: '🍟' },
+      { name: 'Пицца', price: 610, img: '🍕' },
+      { name: 'Кофе', price: 50, img: '☕' }
+    ];
+    const cart = [];
+    const menuDiv = document.getElementById('menu');
+    const cartDiv = document.getElementById('cart');
+
+    function renderMenu() {
+      menuDiv.innerHTML = '';
+      items.forEach((item, i) => {
+        const el = document.createElement('div');
+        el.className = 'item';
+        el.innerHTML = `<span style="font-size:2em">${item.img}</span> ${item.name} — ${item.price}₽ <button class="btn" onclick="addToCart(${i})">+</button>`;
+        menuDiv.appendChild(el);
+      });
+    }
+
+    window.addToCart = function(i) {
+      cart.push(items[i]);
+      renderCart();
+    }
+
+    function renderCart() {
+      if (cart.length === 0) {
+        cartDiv.innerHTML = 'Корзина пуста';
+        return;
+      }
+      let sum = cart.reduce((s, x) => s + x.price, 0);
+      cartDiv.innerHTML = '<b>Корзина:</b><br>' +
+        cart.map(x => `${x.img} ${x.name} — ${x.price}₽`).join('<br>') +
+        `<br><b>Итого: ${sum}₽</b>`;
+    }
+
+    renderMenu();
+    renderCart();
+  </script>
+</body>
+</html>
